@@ -1,6 +1,7 @@
 package main.structure;
 
 import java.util.Random;
+import java.util.function.Predicate;
 
 import main.math.Functions;
 import main.math.MatrixNN;
@@ -35,13 +36,19 @@ public class Network {
 		return tempBiases;
 	}
 	
-	public VectorN feedForward(VectorN inputs) {
-		VectorN output = inputs;
+	public VectorN feedForward(VectorN inputData) {
+		VectorN output = inputData;
 		
 		for (int i = 0; i < weights.length; i++) {
 			output = Functions.activationVector(weights[i], output, biases[i]);
 		}
 		
 		return output;
+	}
+	
+	public boolean evaluate(VectorN inputData, Predicate<VectorN> successCondition) {
+		VectorN output = feedForward(inputData);
+		
+		return successCondition.test(output);
 	}
 }
