@@ -1,6 +1,7 @@
 package main.math;
 
 import java.util.Random;
+import java.util.function.BiFunction;
 
 public class MatrixNN {
 	private final float[][] values;
@@ -55,5 +56,13 @@ public class MatrixNN {
 		}
 		
 		return vals;
+	}
+	
+	public void populate(BiFunction<Integer, Integer, Float> operator) {
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				values[row][col] = operator.apply(row, col);
+			}
+		}
 	}
 }

@@ -24,4 +24,16 @@ public class Functions {
 		
 		return intermediate.apply(Functions::sigmoid);
 	}
+	
+	public static VectorN getMSEVector(final VectorN expected, final VectorN actual) {
+		return VectorN.operate(expected, actual, (e, a) -> 0.5f * (e - a) * (e - a));
+	}
+	
+	public static MatrixNN getDeltas(final VectorN output, final VectorN expected, final VectorN prevOutput, final float learningRate) {
+		MatrixNN deltas = new MatrixNN(output.SIZE, prevOutput.SIZE);
+		
+		deltas.populate((out, prev) -> -(expected.get(out) - output.get(out)) * output.get(out) * (1 - output.get(out)) * prevOutput.get(prev) * learningRate);
+		
+		return deltas;
+	}
 }

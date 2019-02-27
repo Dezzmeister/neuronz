@@ -1,11 +1,12 @@
 package main;
 
-import main.test.network.NetworkTest;
+import main.test.TestUtilities;
+import main.test.math.ParallelVectorTest;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		NetworkTest.randomNetworkTest();
+		TestUtilities.repeat(ParallelVectorTest::addTest, 10);
 	}
 	
 }
