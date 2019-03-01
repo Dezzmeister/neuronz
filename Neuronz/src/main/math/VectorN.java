@@ -8,8 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.BiFunction;
 import java.util.function.DoubleSupplier;
+import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
-import java.util.stream.Stream;
 
 import com.aparapi.Range;
 
@@ -143,6 +143,14 @@ public class VectorN {
 		SigmoidKernel.kernel.execute(range);
 		
 		return new VectorN(out);
+	}
+	
+	public VectorN populate(Function<Integer, Float> operator) {
+		for (int i = 0; i < values.length; i++) {
+			values[i] = operator.apply(i);
+		}
+		
+		return this;
 	}
 	
 	@Override

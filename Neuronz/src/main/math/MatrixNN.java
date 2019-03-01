@@ -19,6 +19,10 @@ public class MatrixNN {
 		this(randomGaussianArray(rows, cols));
 	}
 	
+	public float get(int row, int col) {
+		return values[row][col];
+	}
+	
 	public VectorN multiply(final VectorN vec) {
 		if (vec.SIZE != COLS) {
 			throw new IllegalArgumentException("Vector size must match Matrix columns!");
@@ -31,6 +35,30 @@ public class MatrixNN {
 		}
 		
 		return out;
+	}
+	
+	public MatrixNN plus(MatrixNN matrix) {
+		MatrixNN result = new MatrixNN(ROWS, COLS);
+		
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				result.values[row][col] = values[row][col] + matrix.values[row][col];
+			}
+		}
+		
+		return result;
+	}
+	
+	public MatrixNN minus(MatrixNN matrix) {
+		MatrixNN result = new MatrixNN(ROWS, COLS);
+		
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				result.values[row][col] = values[row][col] - matrix.values[row][col];
+			}
+		}
+		
+		return result;
 	}
 	
 	private float singleRowResult(int row, final VectorN vec) {
@@ -58,11 +86,14 @@ public class MatrixNN {
 		return vals;
 	}
 	
-	public void populate(BiFunction<Integer, Integer, Float> operator) {
+	public MatrixNN populate(BiFunction<Integer, Integer, Float> operator) {
+		
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
 				values[row][col] = operator.apply(row, col);
 			}
 		}
+		
+		return this;
 	}
 }

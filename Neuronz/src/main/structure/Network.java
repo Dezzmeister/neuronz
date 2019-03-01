@@ -46,6 +46,21 @@ public class Network {
 		return output;
 	}
 	
+	public VectorN feedForwardAndLearn(VectorN inputData, VectorN expected, float learningRate) {
+		VectorN hiddenOutput = Functions.activationVector(weights[0], inputData, biases[0]);
+		VectorN output = Functions.activationVector(weights[1], hiddenOutput, biases[1]);
+		
+		VectorN totalErrorOverOutput = Functions.totalErrorOverOutput(output, expected);
+		VectorN outputOverNetInput = Functions.outputOverNetInput(output);
+		
+		MatrixNN outputLayerDeltas = Functions.getOutputLayerDeltas(totalErrorOverOutput, outputOverNetInput, hiddenOutput, learningRate);
+		MatrixNN hiddenLayerDeltas = Functions.getHiddenLayerDeltas(totalErrorOverOutput, outputOverNetInput, hiddenOutput, inputData, weights[1], weights[0], learningRate);
+		weights[1] = weights[1].minus(outputLayerDeltas);
+		weights[0] = weights[0].minus(hiddenLayerDeltas);
+		
+		return output;
+	}
+	
 	public boolean evaluate(VectorN inputData, Predicate<VectorN> successCondition) {
 		VectorN output = feedForward(inputData);
 		
