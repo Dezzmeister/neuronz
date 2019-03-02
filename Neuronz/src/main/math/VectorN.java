@@ -1,5 +1,6 @@
 package main.math;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +16,12 @@ import com.aparapi.Range;
 
 import main.math.execution.SigmoidKernel;
 
-public class VectorN {
+public class VectorN implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8904743786193291092L;
+
 	public final float[] values;
 	
 	public final int SIZE;

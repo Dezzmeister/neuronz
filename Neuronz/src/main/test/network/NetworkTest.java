@@ -2,6 +2,7 @@ package main.test.network;
 
 import main.math.VectorN;
 import main.structure.Network;
+import main.structure.NetworkUtilities;
 
 public class NetworkTest {
 	
@@ -35,6 +36,34 @@ public class NetworkTest {
 				int rand0 = (int)(Math.random() * 2);
 				int rand1 = (int)(Math.random() * 2);
 				int expectedResult = rand0 | rand1;
+				
+				VectorN expected = new VectorN(expectedResult == 1 ? 1 : 0, expectedResult == 0 ? 1 : 0);
+				VectorN input = new VectorN(rand0, rand1);
+				
+				VectorN output = network.feedForwardAndLearn(input, expected, learningRate);
+				
+				int realResult = (output.get(0) > output.get(1)) ? 1 : 0;
+				
+				if (realResult == expectedResult) {
+					correct += 1;
+				}
+			}
+			System.out.println("Percent correct in last 10000 epochs: " + ((100.0f * correct)/10000) + "%");
+		}
+		NetworkUtilities.saveAs(network, "networks/bitwise-network.ntwk");
+	}
+	
+	public static void savedBitwiseNetworkLearningTest() {
+		Network network = NetworkUtilities.load("networks/bitwise-network.ntwk");
+		float learningRate = 0.1f;
+		float epochs = 10000;
+		for (int j = 0; j < 10; j++) {
+			int correct = 0;
+			for (int i = 0; i < epochs; i++) {
+				int rand0 = (int)(Math.random() * 2);
+				int rand1 = (int)(Math.random() * 2);
+				int expectedResult = rand0 | rand1;
+				
 				VectorN expected = new VectorN(expectedResult == 1 ? 1 : 0, expectedResult == 0 ? 1 : 0);
 				VectorN input = new VectorN(rand0, rand1);
 				

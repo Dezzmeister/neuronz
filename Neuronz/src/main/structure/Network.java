@@ -1,5 +1,6 @@
 package main.structure;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.function.Predicate;
 
@@ -7,7 +8,12 @@ import main.math.Functions;
 import main.math.MatrixNN;
 import main.math.VectorN;
 
-public class Network {
+public class Network implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3029795879208794486L;
+	
 	private final int[] layers;
 	private final MatrixNN[] weights;
 	private final VectorN[] biases;

@@ -1,9 +1,15 @@
 package main.math;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.function.BiFunction;
 
-public class MatrixNN {
+public class MatrixNN implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8632376030217345391L;
+	
 	private final float[][] values;
 	public final int ROWS;
 	public final int COLS;

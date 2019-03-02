@@ -49,13 +49,11 @@ public class Functions {
 	public static MatrixNN getHiddenLayerDeltas(final VectorN totalErrorOverOutput, final VectorN outputOverNetInput, VectorN hiddenOutput, VectorN inputs, MatrixNN outputWeights, MatrixNN hiddenWeights, float learningRate) {
 		MatrixNN deltas = new MatrixNN(hiddenWeights.ROWS, hiddenWeights.COLS);
 		
-		VectorN[] outputErrorOverHiddenOutput = new VectorN[hiddenOutput.SIZE];
 		float[] totalErrorOverHiddenOutput = new float[hiddenOutput.SIZE];
 		
 		for (int i = 0; i < hiddenOutput.SIZE; i++) {
 			final int index = i;
-			outputErrorOverHiddenOutput[i] = new VectorN(outputWeights.ROWS).populate(j -> totalErrorOverOutput.get(j) * outputOverNetInput.get(j) * outputWeights.get(j, index));
-			totalErrorOverHiddenOutput[i] = outputErrorOverHiddenOutput[i].sum();
+			totalErrorOverHiddenOutput[i] = new VectorN(outputWeights.ROWS).populate(j -> totalErrorOverOutput.get(j) * outputOverNetInput.get(j) * outputWeights.get(j, index)).sum();
 		}
 		
 		VectorN hiddenOutOverNet = outputOverNetInput(hiddenOutput);
