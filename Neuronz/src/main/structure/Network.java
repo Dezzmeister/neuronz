@@ -52,19 +52,36 @@ public class Network implements Serializable {
 		return output;
 	}
 	
-	public VectorN feedForwardAndLearn(VectorN inputData, VectorN expected, float learningRate) {
-		VectorN hiddenOutput = Functions.activationVector(weights[0], inputData, biases[0]);
-		VectorN output = Functions.activationVector(weights[1], hiddenOutput, biases[1]);
+	public VectorN completeEpoch(final VectorN inputData, final VectorN expected, float learningRate) {
+		VectorN[] outputs = new VectorN[layers.length];
+		outputs[0] = inputData;
 		
-		VectorN totalErrorOverOutput = Functions.totalErrorOverOutput(output, expected);
-		VectorN outputOverNetInput = Functions.outputOverNetInput(output);
+		for (int i = 1; i < layers.length; i++) {
+			outputs[i] = Functions.activationVector(weights[i - 1], outputs[i - 1], biases[i - 1]);
+		}
 		
-		MatrixNN outputLayerDeltas = Functions.getOutputLayerDeltas(totalErrorOverOutput, outputOverNetInput, hiddenOutput, learningRate);
-		MatrixNN hiddenLayerDeltas = Functions.getHiddenLayerDeltas(totalErrorOverOutput, outputOverNetInput, hiddenOutput, inputData, weights[1], weights[0], learningRate);
-		weights[1] = weights[1].minus(outputLayerDeltas);
-		weights[0] = weights[0].minus(hiddenLayerDeltas);
+		applyDeltas(getBackpropDeltas(outputs, weights, expected, learningRate));
+		return outputs[outputs.length - 1];
+	}
+	
+	private MatrixNN[] getBackpropDeltas(final VectorN[] layerOutputs, final MatrixNN[] weights, final VectorN expected, float learningRate) {
+		MatrixNN[] deltaMatrices = new MatrixNN[weights.length];
 		
-		return output;
+		VectorN totalErrorOverOutput = Functions.totalErrorOverOutput(layerOutputs[layerOutputs.length - 1], expected);
+		VectorN outputOverNetInput = Functions.outputOverNetInput(layerOutputs[layerOutputs.length - 1]);
+		deltaMatrices[layerOutputs.length - 2] = Functions.getOutputLayerDeltas(totalErrorOverOutput, outputOverNetInput, layerOutputs[layerOutputs.length - 2], learningRate);
+		
+		for (int i = layerOutputs.length - 2; i >= 1; i--) {
+			deltaMatrices[i - 1] = Functions.getHiddenLayerDeltas(totalErrorOverOutput, outputOverNetInput, layerOutputs[i], layerOutputs[i - 1], weights[i], weights[i - 1], learningRate);
+		}
+		
+		return deltaMatrices;
+	}
+	
+	private void applyDeltas(final MatrixNN[] deltas) {
+		for (int i = 0; i < deltas.length; i++) {
+			weights[i] = weights[i].minus(deltas[i]);
+		}
 	}
 	
 	public boolean evaluate(VectorN inputData, Predicate<VectorN> successCondition) {
