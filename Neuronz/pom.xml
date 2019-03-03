@@ -26,5 +26,10 @@
   		<artifactId>purejavacomm</artifactId>
   		<version>1.0.1.RELEASE</version>
   	</dependency>
+  	<dependency>
+  		<groupId>net.sf.ucanaccess</groupId>
+  		<artifactId>ucanaccess</artifactId>
+  		<version>4.0.4</version>
+  	</dependency>
   </dependencies>
 </project>
