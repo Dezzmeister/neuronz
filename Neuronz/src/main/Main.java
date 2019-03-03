@@ -1,11 +1,11 @@
 package main;
 
-import main.test.network.NetworkRunnerTest;
+import main.test.dataio.DatabaseIOTest;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		NetworkRunnerTest.bitwiseWithVectorBatch();
+		DatabaseIOTest.loadAccessDatabaseTest();
 	}
 	
 }
