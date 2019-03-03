@@ -5,5 +5,5 @@ import main.math.VectorN;
 @FunctionalInterface
 public interface NetworkPredictorFunction {
 	
-	public VectorN getExpectedOutput(VectorN input);
+	public VectorN getExpectedOutput(VectorN input, int index);
 }

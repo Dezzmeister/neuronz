@@ -18,7 +18,7 @@ public class NetworkRunnerTest {
 		
 		VectorNBatch inputBatch = VectorNBatch.generateBatch(batchLength, 4, (index) -> (float)(int)(Math.random() * 2));
 		
-		NetworkPredictorFunction predictor = (v) -> {
+		NetworkPredictorFunction predictor = (v, i) -> {
 			int result = ((int)v.get(0) & (int)v.get(1)) ^ (~(int)v.get(2) | (int)v.get(3));
 			
 			int e0 = 0;
@@ -32,7 +32,7 @@ public class NetworkRunnerTest {
 			return new VectorN(e0, e1);
 		};
 		
-		NetworkEvaluatorFunction evaluator = (e, a) -> {
+		NetworkEvaluatorFunction evaluator = (e, a, i) -> {
 			if (a.get(0) > a.get(1)) {
 				return e.get(0) == 1;
 			} else {
