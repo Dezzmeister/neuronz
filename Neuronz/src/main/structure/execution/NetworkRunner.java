@@ -9,6 +9,7 @@ public class NetworkRunner {
 	private final VectorNBatch inputData;
 	private String fileName;
 	private boolean saveBest = false;
+	private VectorN latestOutput = null;
 	
 	public NetworkRunner(final Network _network, final VectorNBatch _inputData) {
 		network = _network;
@@ -41,6 +42,8 @@ public class NetworkRunner {
 		while ((nextInput = inputData.getNext()) != null) {
 			VectorN expected = predictor.getExpectedOutput(nextInput, index);
 			VectorN output = network.completeEpoch(nextInput, expected, learningRate);
+			latestOutput = output;
+			
 			epochs++;
 			if (evaluator.evaluateEpochSuccess(expected, output, index)) {
 				successes++;
@@ -50,7 +53,7 @@ public class NetworkRunner {
 				System.out.println("Success rate in " + epochPrintInterval + " epochs: \t" + ((100.0f * successes)/epochs) + "%");
 				
 				if (saveBest) {
-					if (successes > bestSuccesses) {
+					if (successes >= bestSuccesses) {
 						bestSuccesses = successes;
 						NetworkUtilities.saveAs(network, fileName);
 					}
@@ -61,5 +64,9 @@ public class NetworkRunner {
 			
 			index++;
 		}
+	}
+	
+	public VectorN getLatestOutput() {
+		return latestOutput;
 	}
 }

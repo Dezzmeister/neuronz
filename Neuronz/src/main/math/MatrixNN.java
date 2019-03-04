@@ -102,4 +102,21 @@ public class MatrixNN implements Serializable {
 		
 		return this;
 	}
+	
+	@Override
+	public String toString() {
+		String out = "";
+		
+		for (int row = 0; row < ROWS; row++) {
+			out += "[";
+			
+			for (int col = 0; col < COLS; col++) {
+				out += values[row][col] + "\t";
+			}
+			out = out.substring(0, out.length() - 1);
+			out += "]\n";
+		}
+		
+		return out;
+	}
 }

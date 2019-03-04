@@ -1,11 +1,11 @@
 package main;
 
-import main.test.dataio.DatabaseIOTest;
+import main.test.network.NetworkRunnerTest;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		DatabaseIOTest.trainDrugUsePredictor();
+		NetworkRunnerTest.mathTest();
 	}
 	
 }

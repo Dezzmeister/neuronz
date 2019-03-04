@@ -8,6 +8,11 @@ import main.math.Functions;
 import main.math.MatrixNN;
 import main.math.VectorN;
 
+/**
+ * Represents a simple neural network.
+ *
+ * @author Joe Desmond
+ */
 public class Network implements Serializable {
 	/**
 	 * 
@@ -23,7 +28,7 @@ public class Network implements Serializable {
 		
 		weights = new MatrixNN[layers.length - 1];
 		for (int i = 0; i < weights.length; i++) {
-			weights[i] = new MatrixNN(layers[i+1], layers[i]);
+			weights[i] = new MatrixNN(layers[i+1], layers[i] + 1);
 		}
 		
 		biases = generateRandomBiases(layers);
@@ -43,10 +48,10 @@ public class Network implements Serializable {
 	}
 	
 	public VectorN feedForward(VectorN inputData) {
-		VectorN output = inputData;
+		VectorN output = inputData.append(1);
 		
 		for (int i = 0; i < weights.length; i++) {
-			output = Functions.activationVector(weights[i], output, biases[i]);
+			output = Functions.activationVectorWithMatrixBiases(weights[i], output);
 		}
 		
 		return output;
@@ -57,7 +62,8 @@ public class Network implements Serializable {
 		outputs[0] = inputData;
 		
 		for (int i = 1; i < layers.length; i++) {
-			outputs[i] = Functions.activationVector(weights[i - 1], outputs[i - 1], biases[i - 1]);
+			outputs[i - 1] = outputs[i - 1].append(1);
+			outputs[i] = Functions.activationVectorWithMatrixBiases(weights[i - 1], outputs[i - 1]);
 		}
 		
 		applyDeltas(getBackpropDeltas(outputs, weights, expected, learningRate));

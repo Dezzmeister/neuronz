@@ -25,6 +25,12 @@ public class Functions {
 		return net.apply(Functions::sigmoid);
 	}
 	
+	public static VectorN activationVectorWithMatrixBiases(final MatrixNN weights, final VectorN prevActivationVector) {
+		VectorN net = (weights.multiply(prevActivationVector));
+		
+		return net.apply(Functions::sigmoid);
+	}
+	
 	public static VectorN getMSEVector(final VectorN expected, final VectorN actual) {
 		return VectorN.operate(expected, actual, (e, a) -> 0.5f * (e - a) * (e - a));
 	}
@@ -46,7 +52,7 @@ public class Functions {
 		return deltas;
 	}
 	
-	public static MatrixNN getHiddenLayerDeltas(final VectorN totalErrorOverOutput, final VectorN outputOverNetInput, VectorN hiddenOutput, VectorN inputs, MatrixNN outputWeights, MatrixNN hiddenWeights, float learningRate) {
+	public static MatrixNN getHiddenLayerDeltas(final VectorN totalErrorOverOutput, final VectorN outputOverNetInput, final VectorN hiddenOutput, final VectorN inputs, final MatrixNN outputWeights, final MatrixNN hiddenWeights, float learningRate) {
 		MatrixNN deltas = new MatrixNN(hiddenWeights.ROWS, hiddenWeights.COLS);
 		
 		float[] totalErrorOverHiddenOutput = new float[hiddenOutput.SIZE];

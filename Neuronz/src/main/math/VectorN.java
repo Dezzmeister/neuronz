@@ -55,6 +55,20 @@ public class VectorN implements Serializable {
 		}
 	}
 	
+	public VectorN append(float ... vals) {
+		VectorN out = new VectorN(values.length + vals.length);
+		
+		for (int i = 0; i < values.length; i++) {
+			out.values[i] = values[i];
+		}
+		
+		for (int i = values.length; i < vals.length; i++) {
+			out.values[i] = vals[i - values.length];
+		}
+		
+		return out;
+	}
+	
 	/**
 	 * Adds this Vector to another. Ensure that both vectors are the same size.
 	 * 
