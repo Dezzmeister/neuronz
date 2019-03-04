@@ -27,6 +27,14 @@ public class Database {
 		return rawData.get(alias);
 	}
 	
+	public int length() {
+		for (Entry<String, List<Integer>> entry : rawData.entrySet()) {
+			return entry.getValue().size();
+		}
+		
+		return 0;
+	}
+	
 	/**
 	 * Loads and stores column data from the database file specified in the constructor.
 	 * 
@@ -62,6 +70,20 @@ public class Database {
 		}
 	}
 	
+	public void combineAliases(String newAlias, ColumnCombinationScheme scheme, String ... aliases) {
+		List<Integer> newColumn = new ArrayList<Integer>();
+		
+		for (int i = 0; i < length(); i++) {
+			int[] values = new int[aliases.length];
+			for (int j = 0; j < aliases.length; j++) {
+				values[j] = rawData.get(aliases[j]).get(i);
+			}
+			newColumn.add(scheme.combine(values));
+		}
+		
+		rawData.put(newAlias, newColumn);
+	}
+	
 	/**
 	 * Removes an entry from all columns if the entry contains a null value in any of the columns specified in <code>aliases</code>.
 	 * 
@@ -90,7 +112,8 @@ public class Database {
 		}
 	}
 	
-	public VectorNBatch convertAndVectorizeInputs(String ... inputAliases) {
+	@Deprecated
+	public VectorNBatch convertAndVectorizeInputsDataInterpreterTest(String ... inputAliases) {
 		VectorN[] inputs = new VectorN[rawData.get(inputAliases[0]).size()];
 		
 		for (int i = 0; i < inputs.length; i++) {
@@ -98,6 +121,22 @@ public class Database {
 			
 			for (int j = 0; j < inputAliases.length; j++) {
 				data[j] = DataInterpreterTest.convert(inputAliases[j], rawData.get(inputAliases[j]).get(i));
+			}
+			
+			inputs[i] = new VectorN(data);
+		}
+		
+		return new VectorNBatch(inputs);
+	}
+	
+	public VectorNBatch convertAndVectorizeInputsDataInterpreter(String ... inputAliases) {
+		VectorN[] inputs = new VectorN[rawData.get(inputAliases[0]).size()];
+		
+		for (int i = 0; i < inputs.length; i++) {
+			float[] data = new float[inputAliases.length];
+			
+			for (int j = 0; j < inputAliases.length; j++) {
+				data[j] = DataInterpreter.interpret(rawData.get(inputAliases[j]).get(i), inputAliases[j]);
 			}
 			
 			inputs[i] = new VectorN(data);
