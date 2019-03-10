@@ -1,11 +1,11 @@
 package main;
 
-import main.test.network.NetworkRunnerTest;
+import main.test.dataio.mnist.MnistLoaderTest;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		NetworkRunnerTest.mathTest();
+		MnistLoaderTest.testImageLoader();
 	}
 	
 }
