@@ -5,5 +5,5 @@ import main.math.VectorN;
 @FunctionalInterface
 public interface NetworkEvaluatorFunction {
 	
-	public boolean evaluateEpochSuccess(VectorN expectedOutput, VectorN actualOutput, int index);
+	public boolean evaluateIterationSuccess(VectorN expectedOutput, VectorN actualOutput, int index);
 }

@@ -19,7 +19,7 @@ public class NetworkTest {
 		float learningRate = 0.1f;
 
 		for (int i = 0; i < 10000; i++) {
-			System.out.println(network.completeEpoch(input, expected, learningRate));
+			System.out.println(network.completeIteration(input, expected, learningRate));
 		}
 	}
 	
@@ -40,7 +40,7 @@ public class NetworkTest {
 				VectorN expected = new VectorN(expectedResult == 1 ? 1 : 0, expectedResult == 0 ? 1 : 0);
 				VectorN input = new VectorN(rand0, rand1);
 				
-				VectorN output = network.completeEpoch(input, expected, learningRate);
+				VectorN output = network.completeIteration(input, expected, learningRate);
 				
 				int realResult = (output.get(0) > output.get(1)) ? 1 : 0;
 				
@@ -67,7 +67,7 @@ public class NetworkTest {
 				VectorN expected = new VectorN(expectedResult == 1 ? 1 : 0, expectedResult == 0 ? 1 : 0);
 				VectorN input = new VectorN(rand0, rand1);
 				
-				VectorN output = network.completeEpoch(input, expected, learningRate);
+				VectorN output = network.completeIteration(input, expected, learningRate);
 				
 				int realResult = (output.get(0) > output.get(1)) ? 1 : 0;
 				
@@ -98,7 +98,7 @@ public class NetworkTest {
 				VectorN expected = new VectorN(expectedResult == 1 ? 1 : 0, expectedResult == 0 ? 1 : 0);
 				VectorN input = new VectorN(rand0, rand1, rand2, rand3);
 				
-				VectorN output = network.completeEpoch(input, expected, learningRate);
+				VectorN output = network.completeIteration(input, expected, learningRate);
 				
 				int realResult = (output.get(0) > output.get(1)) ? 1 : 0;
 				

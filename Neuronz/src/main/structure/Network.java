@@ -57,7 +57,7 @@ public class Network implements Serializable {
 		return output;
 	}
 	
-	public VectorN completeEpoch(final VectorN inputData, final VectorN expected, float learningRate) {
+	public VectorN completeIteration(final VectorN inputData, final VectorN expected, float learningRate) {
 		VectorN[] outputs = new VectorN[layers.length];
 		outputs[0] = inputData;
 		

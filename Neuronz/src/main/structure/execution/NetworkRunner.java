@@ -27,30 +27,30 @@ public class NetworkRunner {
 	 * Runs and trains a Network on the inputs given in the constructor.
 	 * 
 	 * @param predictor function to return the correct output given the input and its index.
-	 * @param evaluator returns true if the network was successful for a given epoch
-	 * @param epochPrintInterval specifies how often to start recalculating the success rate
+	 * @param evaluator returns true if the network was successful for a given iteration
+	 * @param iterationPrintInterval specifies how often to start recalculating the success rate
 	 * @param learningRate the learning rate
 	 */
-	public void runAndTrain(NetworkPredictorFunction predictor, NetworkEvaluatorFunction evaluator, int epochPrintInterval, float learningRate) {
+	public void runAndTrain(NetworkPredictorFunction predictor, NetworkEvaluatorFunction evaluator, int iterationPrintInterval, float learningRate) {
 		inputData.reset();
 		
 		VectorN nextInput = null;
-		int epochs = 0;
+		int iterations = 0;
 		int bestSuccesses = 0;
 		int successes = 0;
 		int index = 0;
 		while ((nextInput = inputData.getNext()) != null) {
 			VectorN expected = predictor.getExpectedOutput(nextInput, index);
-			VectorN output = network.completeEpoch(nextInput, expected, learningRate);
+			VectorN output = network.completeIteration(nextInput, expected, learningRate);
 			latestOutput = output;
 			
-			epochs++;
-			if (evaluator.evaluateEpochSuccess(expected, output, index)) {
+			iterations++;
+			if (evaluator.evaluateIterationSuccess(expected, output, index)) {
 				successes++;
 			}
 			
-			if (epochs == epochPrintInterval) {
-				System.out.println("Success rate in " + epochPrintInterval + " epochs: \t" + ((100.0f * successes)/epochs) + "%");
+			if (iterations == iterationPrintInterval) {
+				System.out.println("Success rate in " + iterationPrintInterval + " iterations: \t" + ((100.0f * successes)/iterations) + "%");
 				
 				if (saveBest) {
 					if (successes >= bestSuccesses) {
@@ -58,7 +58,7 @@ public class NetworkRunner {
 						NetworkUtilities.saveAs(network, fileName);
 					}
 				}
-				epochs = 0;
+				iterations = 0;
 				successes = 0;
 			}
 			
