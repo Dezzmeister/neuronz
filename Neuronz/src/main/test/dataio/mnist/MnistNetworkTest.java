@@ -16,7 +16,7 @@ public class MnistNetworkTest {
 		Network network = null;
 		
 		if (inputs.isUniform()) {
-			network = new Network(inputs.width(), 30, 10);
+			network = new Network(inputs.width(), 100, 10);
 		} else {
 			System.out.println("Input batch is not uniform!");
 		}
@@ -55,7 +55,7 @@ public class MnistNetworkTest {
 			return greatestExpectedDigit == greatestActualDigit;
 		};
 		
-		NetworkRunner runner = new NetworkRunner(network, inputs).saveBestAs("networks/mnist/handwritten-char-recognizer.ntwk");
+		NetworkRunner runner = new NetworkRunner(network, inputs).saveBestAs("networks/mnist/handwritten-char-recognizer-100.ntwk");
 		runner.runAndTrain(predictor, evaluator, 1000, 20000.0f);
 	}
 }
