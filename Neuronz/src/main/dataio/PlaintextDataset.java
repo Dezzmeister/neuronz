@@ -23,7 +23,7 @@ public class PlaintextDataset {
 	 * @throws IOException if there is a problem loading the files
 	 */
 	public PlaintextDataset(final String ... datasetPaths) throws IOException {
-		if (datasetPaths[0] != null) {
+		if (datasetPaths[0] == null) {
 			entries = null;
 			throw new NullPointerException("datasetPaths cannot be null!");
 		}
